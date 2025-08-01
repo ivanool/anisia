@@ -98,33 +98,31 @@ void ht_free(struct HashTable *table){
 }
 
 void ht_delete(struct HashTable *table, char *key){
-        
-        unsigned long hash_value = hash((unsigned char*)key);
-        int index = hash_value%table->size;
-        
-        struct node *nodo = table->buckets[index];
-        struct node *prev = NULL;
-        
-        while(nodo!=NULL){
-                
-                if(strcmp(nodo->key, key)==0){
-                        if(prev ==NULL){
-                                table->buckets[index] = nodo->next;
-                        }
-                        else{
-                                prev->next = nodo->next;
-                        }
-                }
-                
-                free(nodo->key);
-                free(nodo->value);
-                free(nodo);
-                table->count--;
-                return;
+    if (!table || !key) return;  // Validación NULL
+    
+    unsigned long hash_value = hash((unsigned char*)key);
+    int index = hash_value % table->size;
+    
+    struct node *current = table->buckets[index];
+    struct node *prev = NULL;
+    
+    while(current != NULL){
+        if(strcmp(current->key, key) == 0){
+            if(prev == NULL){
+                table->buckets[index] = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            
+            free(current->key);
+            free(current->value);
+            free(current);
+            table->count--;
+            return;
         }
-        prev = nodo;
-        nodo = nodo->next;
-        
+        prev = current;
+        current = current->next;
+    }
 }
 
 

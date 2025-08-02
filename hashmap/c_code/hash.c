@@ -146,6 +146,5 @@ int main() {
                 printf("El apellido no fue encontrado.\n");
         }
         
-        // ... El siguiente paso sería liberar la memoria ...
         return 0;
 }
